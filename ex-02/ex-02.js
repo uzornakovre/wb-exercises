@@ -15,52 +15,55 @@
 // Совершенное число — натуральное число, равное сумме всех своих собственных делителей
 // (то есть всех положительных делителей, отличных от самого числа).
 
-// Проверяем, является ли число странным
+// Вариант 1. Проверяем, является ли число странным
 function isWeirdNumber(number) {
   let divisors = []; // Задаем пустой массив, в который будем помещать делители
   let subsets = []; // Задаем пустой массив, в который будем помещать подмножества
+
+  // функция поиска всех подмножеств массива
+  const getAllSubsets = (arr) =>
+    arr.reduce(
+      (subsets, value) => subsets.concat(subsets.map((set) => [value, ...set])),
+      [[]]
+    );
 
   // Проходимся циклом от 0 до числа
   for (let i = 0; i < number; i++) {
     number % i === 0 && divisors.push(i); // Если число делится на i без остатка, добавляем i в массив
   }
 
+  // если сумма делителей больше числа
   if (divisors.reduce((acc, currentVal) => acc + currentVal, 0) > number) {
-    for (let i = 0; i < divisors.length; i++) {
-      subsets.push([]);
-      subsets[i].push([divisors[i]]);
-      for (let j = i + 1; j < divisors.length; j++) {
-        // console.log(subsets[i]);
-        current = subsets[i];
-        // current.push([]);
-        current[current.length - 1].push(divisors[j]);
-      }
-    }
+    subsets = getAllSubsets(divisors);
+
+    // ищем совпадения суммы подмножества с нашим числом и возвращаем false при успехе
+    return !subsets.some(
+      (ss) => ss.reduce((acc, val) => acc + val, 0) === number
+    );
   }
 
-  // console.log(divisors);
-  return subsets;
+  return false;
 }
 
 console.log(isWeirdNumber(70)); // true
-// console.log(isWeirdNumber(836)); // true
-// console.log(isWeirdNumber(20)); // false
-// console.log(isWeirdNumber(421)); // false
+console.log(isWeirdNumber(836)); // true
+console.log(isWeirdNumber(20)); // false
+console.log(isWeirdNumber(421)); // false
 
-// Проверяем, является ли число совешенным
-// function isPerfectNumber(number) {
-//   let divisors = []; // Задаем пустой массив, в который будем помещать делители
+// Вариант 2. Проверяем, является ли число совешенным
+function isPerfectNumber(number) {
+  let divisors = []; // Задаем пустой массив, в который будем помещать делители
 
-//   // Проходимся циклом от 0 до числа
-//   for (let i = 0; i < number; i++) {
-//     number % i === 0 && divisors.push(i); // Если число делится на i без остатка, добавляем i в массив
-//   }
+  // Проходимся циклом от 0 до числа
+  for (let i = 0; i < number; i++) {
+    number % i === 0 && divisors.push(i); // Если число делится на i без остатка, добавляем i в массив
+  }
 
-//   // возвращаеи результат совпадения суммы всех делителей с самим числом
-//   return divisors.reduce((acc, currentVal) => acc + currentVal, 0) === number;
-// }
+  // возвращаеи результат совпадения суммы всех делителей с самим числом
+  return divisors.reduce((acc, currentVal) => acc + currentVal, 0) === number;
+}
 
-// console.log(isPerfectNumber(6)); // true
-// console.log(isPerfectNumber(28)); // true
-// console.log(isPerfectNumber(5)); // false
-// console.log(isPerfectNumber(41)); // false
+console.log(isPerfectNumber(6)); // true
+console.log(isPerfectNumber(28)); // true
+console.log(isPerfectNumber(5)); // false
+console.log(isPerfectNumber(41)); // false
