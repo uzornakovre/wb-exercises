@@ -1,4 +1,5 @@
 // Реализовать функцию конвертации JSON в строку
+// В данном задании я реализую аналог JSON.stringify(). В задании 10 есть решение для JSON.parse()
 
 const object = { 
   name: "Jack", 
@@ -9,7 +10,6 @@ const object = {
   languages: ['English', 'Spanish']
 };
 
-// Функция-аналог JSON.stringify()
 function stringify(obj) {
   let result = ""; // задаем пустую строку, которую наполним результатом
 
