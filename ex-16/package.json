@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "moment": "^2.29.4"
+  },
+  "name": "ex-16",
+  "version": "1.0.0",
+  "main": "ex-16.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
