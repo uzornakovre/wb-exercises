@@ -1,0 +1,20 @@
+.form {
+  margin: 200px auto 10px;
+  width: 600px;
+}
+
+.tooltip {
+  margin: 0 auto;
+  width: 600px;
+  visibility: hidden;
+  color: black;
+  word-wrap: break-word;
+}
+
+.visible {
+  visibility: visible;
+}
+
+.red {
+  color: red;
+}
