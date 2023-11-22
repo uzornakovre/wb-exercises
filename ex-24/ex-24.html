@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./ex-24.css" />
+    <title>Exercise 24</title>
+  </head>
+  <body>
+    <form id="filter">
+      <select name="mode">
+        <option value="desc">descending</option>
+        <option value="asc" selected>ascending</option>
+      </select>
+      <select name="key">
+        <option value="fname">firstname</option>
+        <option value="lname" selected>lastname</option>
+        <option value="tel">phone</option>
+        <option value="address">address</option>
+        <option value="city">city</option>
+        <option value="state">state</option>
+        <option value="zip">zip</option>
+      </select>
+      <button type="submit">Apply</button>
+    </form>
+    <table id="table">
+      <thead id="heading">
+        <tr>
+          <th>Firstname</th>
+          <th>Lastname</th>
+          <th>Phone</th>
+          <th>Address</th>
+          <th>City</th>
+          <th>State</th>
+          <th>Zip Code</th>
+        </tr>
+      </thead>
+      <tbody id="content"></tbody>
+    </table>
+    <p id="loader">Подождите, данные загружаются...</p>
+    <div id="pagination"></div>
+    <script src="./ex-24.js"></script>
+  </body>
+</html>
