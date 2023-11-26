@@ -8,6 +8,10 @@
 // При переполнении localStorage, данные, загруженные последними должны вытеснять
 // данные загруженные первыми.
 
+// Реализовать функцию подсчета объема памяти занимаемого данными в LocalStorage для предыдущей задачи.
+// При изменении данных в localStorage в консоль должен выводиться объем
+// занятой памяти / максимальный размер хранилища.
+
 const SERVICE_KEY =
   "4b3924654b3924654b39246544482f40d744b394b3924652e673e4f3ec8695f91eec691";
 const BASE_URL = "https://api.vk.com/";
@@ -17,8 +21,44 @@ const OWNER_ID = "-81574241";
 const COUNT = 15;
 
 let wallPosts = [];
+let localStorageSize;
 const storedPosts = localStorage.getItem("list");
 const postList = document.querySelector(".post-list");
+const loader = document.querySelector(".loader");
+
+// расчет размера хранилища возьмем из предыдущей задачи:
+const calculateLocalStorageSize = () => {
+  let length = 0; // здесь будет значение длины строки в хранилище
+  let quoteKB = 0; // здесь будет значение размера в килобайтах
+  let currentLength = localStorage.list?.length || 0; // текуща длина хранилища
+
+  // функция, отвечаюзая за уменьшение шага прибавления длины строки для точности расчета
+  const reduceStep = async (step) => {
+    try {
+      while (step > 0) {
+        length += step; // пока шаг больше 0 увеличиваем длину на шаг
+        localStorage.setItem("test", new Array(length).join("a")); // записываем строку в хранилище
+      }
+    } catch {
+      length -= step; // при возникновени ошибки вычитам последний шаг из длины
+      step = Number(String(step).slice(0, -1)); // отрезаем от шага последнюю цифру
+      reduceStep(step); // рекурсивно вызываем эту же функцию
+    }
+    return length;
+  };
+
+  reduceStep(1000000000).then((l) => {
+    localStorage.removeItem("test"); // после вычисления удаляем значение из хранилища
+    // и сообщаем размер хранилища в КБ (длина из расчетов + длина уже занятого места * 2)
+    // т.к. 1 символ = 2 байта (UTF-16)
+    quoteKB = Math.floor((l + currentLength) * 2 * 0.001);
+    console.log(`Размер хранилища: ${quoteKB} КБ`);
+
+    localStorageSize = quoteKB;
+  });
+};
+
+calculateLocalStorageSize();
 
 // Чтобы осуществлять кроссдоменные запросы к VK API, предлагается использовать протокол JSONP.
 // JSONP или «JSON with padding» (JSON с набивкой) — это дополнение к базовому формату JSON.
@@ -46,6 +86,13 @@ const refreshLocalStorage = (data) => {
   let dataString = JSON.stringify(data); // записываем в переменную данные в виде строки JSON
   try {
     localStorage.setItem("list", dataString); // записываем в хранилище
+    let currentListSize = // уже испольнуемое место в хранилище
+      Math.floor(localStorage.getItem("list")?.length * 2 * 0.001) || 0;
+    console.log(
+      `Занято памяти в хранилище: ${
+        currentListSize + " / " + localStorageSize
+      } KB`
+    );
   } catch {
     // в случае ошибки срезаем начало массива постов на количество подгружаемых, чтобы хватило места
     wallPosts = wallPosts.slice(COUNT);
@@ -53,7 +100,7 @@ const refreshLocalStorage = (data) => {
   }
 };
 
-// функция создания поста из шаблоно
+// функция создания поста из шаблона
 const createPostFromTemplate = () => {
   const post = document
     .querySelector("#post-template")
@@ -96,6 +143,7 @@ const fillPost = (data) => {
 // функция отрисовки постов
 const renderItems = (items) => {
   items.forEach((item) => fillPost(item));
+  loader.classList.remove("active");
 };
 
 // обработчик скролла

@@ -40,3 +40,17 @@ body {
   margin: 0 auto;
   max-width: 100%;
 }
+
+.loader {
+  position: absolute;
+  display: none;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.active {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
