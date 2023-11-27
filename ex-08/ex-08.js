@@ -11,10 +11,10 @@ const funcArray = [
 ];
 
 function getResultArray(functions) {
-  let result = "";
+  let result = [];
 
   return () => {
-    functions.forEach((f) => (result += f() + "; "));
+    functions.forEach((f) => (result.push(f())));
     return result;
   };
 }
